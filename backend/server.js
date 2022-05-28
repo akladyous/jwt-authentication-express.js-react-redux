@@ -1,12 +1,10 @@
 import express from "express";
-import session from "express-session";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 
 import path from "path";
 import { dbConnect } from "./config/dbConnect.js";
-import { root, delay, users } from "./routes/routes.js";
-import { sessionOptions } from "./config/sessionOptions.js";
+import { root, users } from "./routes/routes.js";
 import {
     errorHandler,
     credentials,
@@ -21,13 +19,11 @@ const app = express();
 app.use(logger);
 app.use(credentials);
 app.use(cookieParser(COOKIE_SECRET));
-app.use(session(sessionOptions));
 app.use(handleCors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "/public")));
 
 app.use("/", root);
-app.use("/delay", delay);
 app.use("/api", users);
 
 import { home } from "./routes/home.js"
