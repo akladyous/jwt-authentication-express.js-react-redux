@@ -9,8 +9,7 @@ import {
     userLogin,
     userSignOut,
     userSignUp,
-    refreshToken,
-} from "../../auth/useAuthentication.js";
+} from "./thunks/userThunkActions.js";
 
 export const initialState = {
     isAuthenticated: false,
@@ -18,7 +17,7 @@ export const initialState = {
     status: "idle", // idle | loading | succeeded | failed
     error: {},
     message: "",
-    token: null,
+    // token: null,
 };
 
 const isPendingAction = isPending(userLogin, userSignOut, userSignUp);
@@ -45,29 +44,18 @@ export const userSlice = createSlice({
         setToken: (state, action) => {
             state.token = action.payload;
         },
-        Protectedtest: (state, action) => {
-            // console.log('test action')
-        },
     },
     extraReducers(builder) {
         builder
-            .addCase(refreshToken.fulfilled, (state, action) => {
-                state.token = action.payload;
-                state.status = "succeeded";
-            })
-            .addCase(refreshToken.rejected, (state, action) => {
-                return { ...initialState, error: { message: action.payload } };
-            })
             .addCase(userLogin.fulfilled, (state, action) => {
                 state.isAuthenticated = true;
                 state.error = {};
                 state.message = "Login successfullt completed";
-                state.token = action.payload;
-                state.status = "succeeded";
-                // console.log('userlogin action payload : ', action.payload)
+                state.user = action.payload;
+                console.log('userlogin SLICE action payload : ', action.payload)
             })
-            .addCase(userLogin.rejected, (state) => {
-                localStorage.removeItem("token");
+            .addCase(userLogin.rejected, (state, action) => {
+                state.error = action.payload
             })
             .addCase(userSignOut.fulfilled, (state) => {
                 return { ...initialState };
@@ -76,13 +64,16 @@ export const userSlice = createSlice({
                 state.isAuthenticated = true;
                 state.error = {};
                 state.message = "Account successfully created";
-                state.token = action.payload;
+                state.user = action.payload;
+            })
+            .addCase(userSignUp.rejected, (state, action) =>{
+                state.error = {message: action.payload}
             })
             .addMatcher(isPendingAction, (state) => {
                 state.status = "loading";
             })
             .addMatcher(isFulfilledAction, (state) => {
-                state.status = "idle";
+                state.status = "succeeded";
             })
             .addMatcher(isRejectedAction, (state, action) => {
                 state.status = "failed";

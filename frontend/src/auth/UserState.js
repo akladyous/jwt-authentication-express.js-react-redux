@@ -16,11 +16,13 @@ export default function UserState () {
             const encodedPayload = token.split(".")[1];
             const decoded = JSON.parse(window.atob(encodedPayload))
             if (decoded.hasOwnProperty('exp')){
-                if(Date.now() <= decoded.exp * 1000){
-                    return decoded;
-                } else {
-                    throw new Error('token expired')
-                }
+                return decoded;
+                
+                // if(Date.now() <= decoded.exp * 1000){
+                //     return decoded;
+                // } else {
+                //     throw new Error('token expired')
+                // }
 
             }
         } catch (err){
@@ -31,15 +33,15 @@ export default function UserState () {
 
     useEffect(() => {
         let isMounted = true;
-        if (isMounted) {
-            const decodedToken = getPayload(token);
-            if (!token || decodedToken === null) {
-                dispatch(resetUser());
-            } else {
-                dispatch(setUser(decodedToken));
-                dispatch(setUserState(true));
-            }
-        }
+        // if (isMounted) {
+        //     const decodedToken = getPayload(token);
+        //     if (!token || decodedToken === null) {
+        //         dispatch(resetUser());
+        //     } else {
+        //         dispatch(setUser(decodedToken));
+        //         dispatch(setUserState(true));
+        //     }
+        // }
 
         return () => {
             isMounted = false;

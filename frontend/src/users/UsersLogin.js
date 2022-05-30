@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { userLogin } from "../auth/useAuthentication.js";
-import { userState } from "../features/users/userSlice.js";
+import { userLogin } from "../features/users/thunks/userThunkActions.js";
+import { userState, setUser } from "../features/users/userSlice.js";
+import { setToken, setTokenState } from "../features/token/tokenSlice.js";
 import { useNavigate, useLocation } from "react-router-dom";
 // import useIsMounted from "../hooks/useIsMounted.js";
 
@@ -20,12 +21,16 @@ export default function UsersLogin() {
     const [password, setPassword] = useState("");
 
 
+
+
     const handleForm = async (e) => {
         e.preventDefault();
         dispatch(userLogin({ email, password }))
         .unwrap()
-        .then(result => {console.log(result)})
-        .catch(error => {console.log(error)})
+        .then(decoded => {
+            console.log("userLogin -> dispatch then : ", decoded)
+        })
+        .catch(error => {console.log("userLogin ->  : dispatch catch", error)})
         
         if (state.isAuthenticated) {
             console.log("ok authenticated ..");

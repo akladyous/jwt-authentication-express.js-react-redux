@@ -32,7 +32,7 @@ app.post("/home", home);
 import {test} from './routes/test.js'
 import { verifyAuth } from './middleware/verifyAuth.js'
 import { handleRefreshToken } from './middleware/handleRefreshToken.js'
-app.get("/refresh", handleRefreshToken);
+app.get("api/refresh", handleRefreshToken);
 app.get("/test", verifyAuth, test);
 
 app.use(missingRoutes);

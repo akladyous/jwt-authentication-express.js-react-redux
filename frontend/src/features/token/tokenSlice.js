@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { refreshToken } from './thunks/token.js'
+import { tokenRefresh, tokenDecode } from "./thunks/tokenThunkActions.js";
 
 export const initialState = {
+    // iat: null,
+    // exp: null,
+    // payload: {},
     accessToken: null,
-    status: false,
 }
 
 export const tokenSlice = createSlice({
@@ -13,22 +15,29 @@ export const tokenSlice = createSlice({
         setToken: (state, action) => {
             state.token = action.payload;
         },
-        resetState: () => {
+        resetTokenState: () => {
             return { ...initialState };
+        },
+        setTokenState: (state, action) => {
+            console.log('setTokenState action : ', action)
+            return { ...initialState, ...action.payload };
         },
     },
     extraReducers(builder) {
         builder
-        .addCase(refreshToken.fulfilled, (state, action) => {
-            state.token = action.payload;
-            state.status = "succeeded";
-        })
-        .addCase(refreshToken.rejected, () => {
-            return { ...initialState };
-        });
+            .addCase(tokenDecode.fulfilled, (state, action) => {
+                state.accessToken =  action.payload.accessToken;
+            })
+            .addCase(tokenRefresh.fulfilled, (state, action) => {
+                state.token = action.payload;
+                state.status = "succeeded";
+            })
+            .addCase(tokenRefresh.rejected, () => {
+                return { ...initialState };
+            });
     }
 });
 
 export default tokenSlice.reducer;
 export const tokenState = (state) => state.token;
-export const { setToken, resetState } =tokenSlice.actions;
+export const { setToken, resetTokenState, setTokenState } = tokenSlice.actions;

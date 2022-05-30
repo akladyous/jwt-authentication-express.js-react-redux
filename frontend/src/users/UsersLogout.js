@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { userSignOut } from "../auth/useAuthentication.js";
+import { userSignOut } from "../features/users/thunks/userThunkActions.js";
 import { userState } from "../features/users/userSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 

@@ -18,7 +18,7 @@ export default class Auth {
     static jwtSign(payload, secret, timeout) {
         return new Promise((resolve, reject) => {
             jwt.sign(
-                payload,
+                {payload},
                 secret,
                 { expiresIn: timeout },
                 (jwtError, token) => {

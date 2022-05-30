@@ -5,9 +5,8 @@ import userReducer, {
 import tokenReducer, {
     initialState as tokenState,
 } from "../features/token/tokenSlice.js";
-import { refreshToken } from "../auth/useAuthentication.js";
+import { tokenDecode } from "../features/token/thunks/tokenThunkActions.js";
 import { saveState, loadState } from "./localStorage.js";
-
 
 // import { setUser } from "../features/users/userSlice.js";
 // const decodeToken = (store) => (next) => (action) => {
@@ -33,7 +32,7 @@ import { saveState, loadState } from "./localStorage.js";
 
 const renewToken = (store) => (next) => (action) => {
     if (action.type.includes("Protected")) {
-        store.dispatch(refreshToken()).then((result) => {
+        store.dispatch(tokenDecode()).then((result) => {
             // if (result.type.endsWith("rejected")) {
             //     console.error("refresh token error: ", result);
             //     return next(action);

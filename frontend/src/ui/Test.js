@@ -2,7 +2,8 @@ import { userState } from "../features/users/userSlice.js";
 import { useSelector, useDispatch } from "react-redux";
 import { axiosPrivate } from '../api/axios.js'
 import { Protectedtest } from "../features/users/userSlice.js";
-import { refreshToken } from "../features/token/thunks/token.js";
+// import { refreshToken } from "../features/token/thunks/token.js";
+import { tokenRefresh } from "../features/token/thunks/tokenThunkActions.js";
 
 export default function Test() {
     const {token} = useSelector(userState);
@@ -22,17 +23,16 @@ export default function Test() {
             console.log("test endpoint error : ", error);
         }
     }
-    
 
     const accessToken = async () =>{
-            dispatch(refreshToken())
-            .unwrap()
-            .then( result => {
-                console.log("result from dispatch fulfilled : ", result)
-            })
-            .catch(error => {
-                console.log("result from dispatch rejected : ", error)
-            })
+            dispatch(tokenRefresh())
+                .unwrap()
+                .then((result) => {
+                    console.log("result from dispatch fulfilled : ", result);
+                })
+                .catch((error) => {
+                    console.log("result from dispatch rejected : ", error);
+                });
     }
 
     return (

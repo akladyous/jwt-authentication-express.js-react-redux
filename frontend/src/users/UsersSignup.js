@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 // import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { userState } from "../features/users/userSlice.js";
-import { userSignUp } from "../auth/useAuthentication.js";
+import { userSignUp } from "../features/users/thunks/userThunkActions.js";
 
 export default function UsersSignup() {
     const state = useSelector(userState);
@@ -30,7 +30,7 @@ export default function UsersSignup() {
             dispatch(
                 userSignUp(
                     { email: formData.email, password: formData.password },
-                    { signal }
+                    // { signal }
                 )
             );
         }
